@@ -13,7 +13,7 @@ __pycache__/
 *.pkl
 *.joblib
 
-saved_asl_model(1)/
+saved_asl_model (1)/
 asl-alphabet/
 test_images/
 
