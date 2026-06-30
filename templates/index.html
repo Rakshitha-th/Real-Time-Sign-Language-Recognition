@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign Language Translator AI</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1> Sign Language Translator </h1>
+        <p>Real-Time Sign Language Recognition & Speech Conversion</p>
+    </div>
+    <div class="status">Sign Language Recognition System</div>
+</header>
+
+<div class="container">
+
+    <div class="left-panel">
+
+        <div class="card">
+            <h3>Controls</h3>
+
+            <button class="start-btn" onclick="startRec()"> Start</button>
+            <button class="stop-btn" onclick="stopRec()"> Stop</button>
+            <button class="speak-btn" onclick="speakText()"> Speak</button>
+            <button class="clear-btn" onclick="clearText()"> Clear</button>
+        </div>
+
+        <div class="card">
+            <h3>Current Letter</h3>
+            <div id="letter" class="big-letter">-</div>
+        </div>
+
+        <div class="card">
+            <h3>Status</h3>
+            <div id="status"> Stopped</div>
+        </div>
+
+    </div>
+
+    <div class="camera-section">
+        <div class="camera-card">
+            <img src="/video" alt="Camera Feed">
+        </div>
+    </div>
+
+    <div class="right-panel">
+
+        <div class="card">
+            <h3>Confidence</h3>
+            <div class="progress"><div id="bar"></div></div>
+            <div id="confidence" class="value">0%</div>
+        </div>
+
+        <div class="card">
+            <h3>History</h3>
+            <div id="history">-</div>
+        </div>
+
+        <div class="card">
+            <h3>Generated Text</h3>
+            <div id="sentence" class="sentence">Waiting...</div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+function startRec(){ fetch('/start'); }
+
+function stopRec(){
+    fetch('/stop')
+    .then(r=>r.json())
+    .then(d=>$('sentence').innerHTML=d.sentence);
+}
+
+function clearText(){ fetch('/clear'); }
+
+function speakText(){
+    let txt = $('sentence').innerText;
+    if(!txt || txt==="Waiting...") return;
+
+    let speech = new SpeechSynthesisUtterance(txt);
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    speechSynthesis.speak(speech);
+}
+
+function updateData(){
+    fetch('/live')
+    .then(r=>r.json())
+    .then(d=>{
+        $('letter').innerHTML = d.letter;
+        $('sentence').innerHTML = d.sentence || "Waiting...";
+        $('history').innerHTML = d.history || "-";
+
+        let conf = Math.round(d.confidence * 100);
+        $('confidence').innerHTML = conf + "%";
+        $('bar').style.width = conf + "%";
+
+        $('status').innerHTML =
+            d.recording ? " Recording" : " Stopped";
+    });
+}
+
+setInterval(updateData,300);
+
+</script>
+
+</body>
+</html>
