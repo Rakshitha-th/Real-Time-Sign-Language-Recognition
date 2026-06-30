@@ -1,21 +1,15 @@
-Real-Time Sign Language Recognition
+A real-time sign language recognition system that detects hand gestures using a webcam and converts them into text using a trained deep learning model. It captures hand gestures from live video, processes them using a CNN model, and predicts the corresponding ASL alphabet (A–Z). The predicted output is displayed on screen and stored in a Results folder for reference. The system also supports image-based prediction for testing static inputs.
 
-This project is a real-time sign language recognition system that detects hand gestures and converts them into text using computer vision and deep learning.
+Tech Used & Purpose:
 
-The model is built using a Convolutional Neural Network (CNN) with TensorFlow/Keras.
+TensorFlow / Keras → Build and train CNN model for gesture classification
+OpenCV → Webcam capture, image preprocessing, and real-time frame processing
+Google Colab → Model training environment for ASL dataset
+HTML / CSS (UI) → User interface for displaying predictions
+Python → Core backend logic for prediction and integration
+Speech Library (gTTS / pyttsx3) → Converts predicted text into speech output (if enabled)
+ASL Dataset → Contains hand gesture images from A–Z used for training
 
-The model was trained in Google Colab using the ASL Alphabet dataset containing images from A to Z.
-
-After training, the saved model was integrated into a UI built using HTML/CSS (and/or Flask) and executed in VS Code for real-time prediction.
-
-The system supports webcam-based real-time recognition as well as image-based prediction.
-
-The model achieved an accuracy of 95% on the ASL dataset.
-
-The system also includes speech output (text-to-speech) to read the predicted letters aloud.
-
-This project uses OpenCV for image processing, TensorFlow for model inference, and speech libraries for audio output.
-
-It helps in improving communication for hearing-impaired individuals by translating gestures into text and speech.
+Model achieved an accuracy of 95% on the ASL dataset. The system helps in bridging communication by translating sign language gestures into text and speech in real time.
 
 All prediction outputs are stored in the Results folder.
